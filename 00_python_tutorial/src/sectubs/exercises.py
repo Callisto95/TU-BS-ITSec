@@ -1,7 +1,12 @@
 from argparse import ArgumentParser
 from datetime import datetime
+from math import floor
 from os import listdir
 from pathlib import Path
+
+BASE64_CHARS: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+BASE64_SHIFTS: list[int] = [10, 4, 6, 0]
+BASE64_BIT_MASK: int = (2 ** 6) - 1
 
 
 class Exercise00:
@@ -62,6 +67,48 @@ class Exercise00:
 		keys.sort()
 		
 		return "\n".join([f"{key} = {kwargs[key]}" for key in keys])
+	
+	def __str__(self) -> str:
+		output: str = ""
+		
+		data: bytearray = bytearray(self.name.encode('ascii'))
+		base_64_partitions: int = len(data) * 8 // 6
+		leftover: int = len(data) * 8 % 6
+		
+		count: int = -1
+		while (count := count + 1) < base_64_partitions:
+			data_to_read: int = 1 if (count + 1) % 4 == 0 else 2
+			
+			shift: int = BASE64_SHIFTS[count % 4]
+			offset: int = floor(count * 0.75)
+			
+			current_data: bytearray = data[offset:offset + data_to_read]
+			
+			# this can happen on very short strings
+			# must be ignored on longer ones
+			if len(current_data) == 1 and count == 0:
+				current_data.append(0)
+			
+			current: int = int.from_bytes(current_data) >> shift & BASE64_BIT_MASK
+			output += BASE64_CHARS[current]
+		
+		match leftover:
+			case 2:
+				output += BASE64_CHARS[(int.from_bytes(data[-1:]) << 4) & BASE64_BIT_MASK]
+				output += "=="
+			case 4:
+				output += BASE64_CHARS[(int.from_bytes(data[-1:]) << 2) & BASE64_BIT_MASK]
+				output += "="
+		
+		return output
+
+
+# if __name__ == '__main__':
+# 	# print(str(Exercise00("Man")))
+# 	# print("TWFu")
+# 	print(str(Exercise00("ManManMan")))
+# 	print("TWFu" * 3)
+# 	exit(0)
 
 
 if __name__ == '__main__':
