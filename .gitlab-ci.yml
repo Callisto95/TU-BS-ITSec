@@ -1,0 +1,29 @@
+stages: # List of stages for jobs, and their order of execution
+    - run-tests
+
+variables:
+    # Authentication to pull images from the registry of the itsec/docker repository
+    # Token is an access token for itsec/docker with id "ci-read-registry" and Developer role and read_registry permission
+    # It is saved as a CI variable with key CI_REGISTRY_PASSWORD in the itsec scope
+    DOCKER_AUTH_CONFIG: >-
+        {
+          "auths": {
+            "git.rz.tu-bs.de:4567": {
+              "username":  "ci-read-registry",
+              "password":  "$CI_REGISTRY_PASSWORD"
+            }
+          }
+        }
+
+test-00:
+    stage: run-tests
+    image: python:3.12
+    rules:
+        - changes:
+              - "00_python_tutorial/**/*"
+    artifacts:
+        paths:
+            - 00_python_tutorial/
+        expire_in: 1 month
+    script:
+        - python3 execute_tests.py ./00_python_tutorial
