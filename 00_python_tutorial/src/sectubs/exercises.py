@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 from datetime import datetime
-from math import floor
+from math import ceil
 from os import listdir
 from pathlib import Path
 
@@ -68,46 +68,42 @@ class Exercise00:
 		
 		return "\n".join([f"{key} = {kwargs[key]}" for key in keys])
 	
+	@staticmethod
+	def encode_block(block: bytearray, length: int) -> str:
+		out: str = ""
+		out += BASE64_CHARS[block[0] >> 2]
+		out += BASE64_CHARS[((block[0] & 3) << 4) | ((block[1] & 240) >> 4)]
+		out += BASE64_CHARS[((block[1] & 15) << 2) | ((block[2] & 192) >> 6)] if length > 1 else "="
+		out += BASE64_CHARS[block[2] & 63] if length > 2 else "="
+		
+		# print(out)
+		
+		return out
+	
 	def __str__(self) -> str:
 		output: str = ""
 		
 		data: bytearray = bytearray(self.name.encode('ascii'))
-		base_64_partitions: int = len(data) * 8 // 6
-		leftover: int = len(data) * 8 % 6
-		
+		# block_count: int = floor(len(data) * 8 / 6 / 3)
+		block_count: int = ceil(len(data) / 3)
+
 		count: int = -1
-		while (count := count + 1) < base_64_partitions:
-			data_to_read: int = 1 if (count + 1) % 4 == 0 else 2
+		while (count := count + 1) < block_count:
+			offset: int = count * 3
+			current_block: bytearray = data[offset:offset + 3]
 			
-			shift: int = BASE64_SHIFTS[count % 4]
-			offset: int = floor(count * 0.75)
+			actual_length: int = len(current_block)
+			current_block = current_block.ljust(3, b"\x00")
 			
-			current_data: bytearray = data[offset:offset + data_to_read]
-			
-			# this can happen on very short strings
-			# must be ignored on longer ones
-			if len(current_data) == 1 and count == 0:
-				current_data.append(0)
-			
-			current: int = int.from_bytes(current_data) >> shift & BASE64_BIT_MASK
-			output += BASE64_CHARS[current]
-		
-		match leftover:
-			case 2:
-				output += BASE64_CHARS[(int.from_bytes(data[-1:]) << 4) & BASE64_BIT_MASK]
-				output += "=="
-			case 4:
-				output += BASE64_CHARS[(int.from_bytes(data[-1:]) << 2) & BASE64_BIT_MASK]
-				output += "="
+			output += self.encode_block(current_block, actual_length)
 		
 		return output
 
 
 # if __name__ == '__main__':
-# 	# print(str(Exercise00("Man")))
-# 	# print("TWFu")
-# 	print(str(Exercise00("ManManMan")))
-# 	print("TWFu" * 3)
+# 	print(str(Exercise00("ManMan")))
+# 	print(str(Exercise00("ManMa")))
+# 	print(str(Exercise00("ManM")))
 # 	exit(0)
 
 
