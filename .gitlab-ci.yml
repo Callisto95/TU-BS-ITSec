@@ -27,3 +27,16 @@ test-00:
         expire_in: 1 month
     script:
         - python3 execute_tests.py ./00_python_tutorial
+
+test-01:
+    stage: run-tests
+    image: python:3.12
+    rules:
+        - changes:
+              - "01_crypto/**/*"
+    artifacts:
+        paths:
+            - 01_crypto/
+        expire_in: 1 month
+    script:
+        - python3 execute_tests.py ./01_crypto
