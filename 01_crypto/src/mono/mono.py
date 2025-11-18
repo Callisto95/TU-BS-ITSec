@@ -13,7 +13,19 @@ class Mode(Enum):
     DECRYPT = auto()
 
 
-def main():
+def read_encrypted_file(file: Path) -> str:
+    with open(file, "r") as input_:
+        line: str = input_.readline().lower()
+        line = re.sub("[^a-z]", "", line)
+    
+    return line
+
+
+def apply_exchange_map(word: str, map_: dict[str, str]) -> str:
+    return "".join([map_[char] for char in word])
+
+
+def main() -> None:
     args: Namespace = parse_args()
     
     mode: Mode = Mode.ENCRYPT if args.encrypt else Mode.DECRYPT
@@ -21,17 +33,15 @@ def main():
     
     exchange_map: dict[str, str] = create_exchange_map(key, mode)
     
-    with open(args.file, "r") as input_:
-        line: str = input_.readline().lower()
-        line = re.sub("[^a-z]", "", line)
+    line: str = read_encrypted_file(args.file)
     
-    # print(line)
+    output: str = apply_exchange_map(line, exchange_map)
     
-    output: str = ""
-    for char in line:
-        output += exchange_map[char]
-    
-    print(output)
+    if args.output:
+        with open(args.output, "w") as output_file:
+            output_file.write(output)
+    else:
+        print(output)
 
 
 def parse_args() -> Namespace:
