@@ -4,25 +4,30 @@
 
 ### a
 
-Vertraulichkeit
+#### Vertraulichkeit
+
 Definition: Vertraulichkeit bedeutet, dass nur autorisierte Personen Zugriff auf Informationen oder Gegenstände haben.
-→ Mallory konnte möglicherweise persönliche Dokumente, digitale Geräte oder private Informationen einsehen.
+$\rightarrow$ Mallory konnte möglicherweise persönliche Dokumente, digitale Geräte oder private Informationen einsehen.
 
-Integrität
+#### Integrität
+
 Definition: Integrität bedeutet, dass Daten oder Gegenstände nicht unbemerkt verändert oder manipuliert werden dürfen.
-→ Mallory könnte Dinge beschädigt, verändert oder manipuliert haben, z. B. Daten auf einem Computer.
+$\rightarrow$ Mallory könnte Dinge beschädigt, verändert oder manipuliert haben, z. B. Daten auf einem Computer.
 
-Verfügbarkeit
+#### Verfügbarkeit
+
 Definition: Verfügbarkeit bedeutet, dass Ressourcen für autorisierte Personen zugänglich bleiben.
-→ Falls Mallory etwas gestohlen oder zerstört hat, sind diese Ressourcen für Alice nicht mehr verfügbar.
+$\rightarrow$ Falls Mallory etwas gestohlen oder zerstört hat, sind diese Ressourcen für Alice nicht mehr verfügbar.
 
-Authentizität
+#### Authentizität
+
 Definition: Authentizität stellt sicher, dass jemand tatsächlich derjenige ist, der er vorgibt zu sein.
-→ Mallory hat sich „Zugang verschafft“, ohne berechtigt zu sein – ein indirekter Verstoß.
+$\rightarrow$ Mallory hat sich „Zugang verschafft“, ohne berechtigt zu sein – ein indirekter Verstoß.
 
 ### b
 
-Physische Sicherheitsmechanismen
+#### Physische Sicherheitsmechanismen
+
 Definition: Maßnahmen, die den physischen Zugriff verhindern oder erschweren.
 Beispiele:
 
@@ -34,7 +39,8 @@ Alarmanlage
 
 Bewegungsmelder
 
-Organisatorische Sicherheitsmechanismen
+#### Organisatorische Sicherheitsmechanismen
+
 Definition: Regeln und Abläufe, die Sicherheit erhöhen.
 Beispiele:
 
@@ -44,7 +50,8 @@ Sicherheitsrichtlinien, z. B. nie den Schlüssel draußen verstecken
 
 Mietvertrag mit Sicherheitsdienst im Gebäude
 
-Technische / digitale Sicherheitsmechanismen
+#### Technische / digitale Sicherheitsmechanismen
+
 Definition: Technologien, die digitale oder physische Ressourcen schützen.
 Beispiele:
 
@@ -54,7 +61,8 @@ Kamera mit Cloud-Video
 
 elektronisches Türschloss mit Zwei-Faktor-Authentisierung
 
-Detektivische Mechanismen
+#### Detektivische Mechanismen
+
 Definition: Maßnahmen, die Vorfälle erkennen oder nachvollziehbar machen.
 Beispiele:
 
@@ -66,14 +74,15 @@ Smart-Home-Benachrichtigungen
 
 ## 2. Key Space
 
-Set of possible values for $K_E$ and $K_D$.
+Menge aller Werte für $K_E$ and $K_D$.
 
 ### ROT13
 
 Definition (ROT13): Eine Caesar-Verschlüsselung mit festem Verschiebungswert 13.
 
-Da der Schlüssel nicht gewählt werden kann:
-→ Schlüsselraum = 1
+Da der Schlüssel nicht gewählt werden kann
+
+Schlüsselraum = 1
 
 
 ### Vigènere with key length of n
@@ -83,7 +92,7 @@ Definition (Vigenère-Chiffre): Eine polyalphabetische Verschlüsselung, bei der
 Bei Schlüssellänge 
 𝑛 und 26 möglichen Varianten pro Position:
 
-Schlusselraum = 26^n
+Schlusselraum = $26^n$
 
 
 ### AES with 256-bit key
@@ -92,12 +101,12 @@ Definition (AES): Ein symmetrischer Blockcipher mit Schlüssellängen 128, 192 o
 
 Bei 256 Bit gilt:
 
-Schlusselraum = 2^256
+Schlusselraum = $2^{256}$
 
 
 ### Monoalphabetic substitution with k letters
 
-Definition (monoalphabetische Substitution): Jede Klartextbuchstabe wird eindeutig einem Geheimtextbuchstaben zugeordnet – also eine Permutation des Alphabets.
+Definition (monoalphabetische Substitution): Jeder Klartextbuchstabe wird eindeutig einem Geheimtextbuchstaben zugeordnet – also eine Permutation des Alphabets.
 
 Anzahl der möglichen Permutationen:
 
@@ -105,6 +114,10 @@ Schlusselraum = 𝑘!
 
 ## 3. XOR
 
-Calculate `c0 X c1 = (m0 X k) X (m1 X k) = m0 X m1 = mx`.
+Berechne
 
-Guess part of the key to get a part of the plaintext of m0.
+$$c0 \oplus c1 = (m0 \oplus k) \oplus (m1 \oplus k) = m0 \oplus m1 = mx$$
+
+Rate immer längere Teile des Schlüssels durch $mx \oplus k_i = m1_i$, bis der Schlüssel k geraten wurde.
+
+Einfach $c0 \oplus k = m0$ und $c1 \oplus k = m1$ berechnen.
