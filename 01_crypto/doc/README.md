@@ -81,21 +81,10 @@ Da der Schlüssel nicht gewählt werden kann:
 Definition (Vigenère-Chiffre): Eine polyalphabetische Verschlüsselung, bei der jedes Schlüsselzeichen eine von 26 Caesar-Verschiebungen auswählt.
 
 Bei Schlüssellänge 
-𝑛
-n und 26 möglichen Varianten pro Position:
+𝑛 und 26 möglichen Varianten pro Position:
 
-Schl
-u
-¨
-sselraum
-=
-26
-𝑛
-Schl
-u
-¨
-sselraum=26
-n
+Schlusselraum = 26^n
+
 
 ### AES with 256-bit key
 
@@ -103,18 +92,8 @@ Definition (AES): Ein symmetrischer Blockcipher mit Schlüssellängen 128, 192 o
 
 Bei 256 Bit gilt:
 
-Schl
-u
-¨
-sselraum
-=
-2
-256
-Schl
-u
-¨
-sselraum=2
-256
+Schlusselraum = 2^256
+
 
 ### Monoalphabetic substitution with k letters
 
@@ -122,26 +101,10 @@ Definition (monoalphabetische Substitution): Jede Klartextbuchstabe wird eindeut
 
 Anzahl der möglichen Permutationen:
 
-Schl
-u
-¨
-sselraum
-=
-𝑘
-!
-Schl
-u
-¨
-sselraum=k!
+Schlusselraum = 𝑘!
 
 ## 3. XOR
 
-Calculate
+Calculate `c0 X c1 = (m0 X k) X (m1 X k) = m0 X m1 = mx`.
 
-$$c0 \oplus c1 = (m0 \oplus k) \oplus (m1 \oplus k) = (k \oplus k) \oplus (m0 \oplus m1) = 0 \oplus (m0 \oplus m1) = m0 \oplus m1 = mx$$
-
-Guess more and more of the key k to get the plaintext m0.
-
-Once the key is known, decrypt using $c_0 \oplus k = m_0$ and $c_1 \oplus k = m_1$.
-
-Since the decryption guesses the key k it is recovered.  
+Guess part of the key to get a part of the plaintext of m0.
