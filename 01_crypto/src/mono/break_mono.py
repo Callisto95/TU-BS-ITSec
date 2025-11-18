@@ -1,6 +1,7 @@
 import random
 import re
 import string
+from itertools import permutations
 from random import choice, shuffle
 
 from mono import apply_exchange_map, create_exchange_map, Mode, read_encrypted_file
@@ -46,14 +47,21 @@ def default_mapping() -> dict[str, str]:
 
 
 def main() -> None:
-    args: Namespace = parse_args()
-    encrypted_line: str = read_encrypted_file(args.file)
+    # args: Namespace = parse_args()
+    # encrypted_line: str = read_encrypted_file(args.file)
+    # 
+    # words, word_lengths = load_common_words()
+    # 
+    # minimum_length: int = min(list(word_lengths.keys()))
+    # maximum_length: int = max(list(word_lengths.keys()))
     
-    words, word_lengths = load_common_words()
-    
-    minimum_length: int = min(list(word_lengths.keys()))
-    maximum_length: int = max(list(word_lengths.keys()))
-    
+    # just brute force the solution
+    # THIS DOESN'T WORK because the word list is missing works
+    # there is no differentiation between random letters and missing words
+    # for guessed_key in permutations(string.ascii_lowercase):
+    #     print("".join(guessed_key))
+
+    """
     # word list is lacking words
     # 'Chapter' - the first word - is missing
     for length in range(minimum_length, maximum_length + 1):
@@ -64,6 +72,7 @@ def main() -> None:
                     # assume this is the correct decryption
                     mapping[encrypted_char] = char
                     mapping[char] = encrypted_char
+    """
                 
     
     """
