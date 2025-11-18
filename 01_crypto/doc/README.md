@@ -38,6 +38,12 @@ It's a symmetric cipher with k base values of length n.
 
 ## 3. XOR
 
-Calculate `c0 X c1 = (m0 X k) X (m1 X k) = m0 X m1 = mx`.
+Calculate
 
-Guess part of the key to get a part of the plaintext of m0.
+$$c0 \oplus c1 = (m0 \oplus k) \oplus (m1 \oplus k) = (k \oplus k) \oplus (m0 \oplus m1) = 0 \oplus (m0 \oplus m1) = m0 \oplus m1 = mx$$
+
+Guess more and more of the key k to get the plaintext m0.
+
+Once the key is known, decrypt using $c_0 \oplus k = m_0$ and $c_1 \oplus k = m_1$.
+
+Since the decryption guesses the key k it is recovered.  
