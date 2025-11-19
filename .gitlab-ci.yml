@@ -40,3 +40,16 @@ test-01:
         expire_in: 1 month
     script:
         - python3 execute_tests.py ./01_crypto
+
+test-02:
+    stage: run-tests
+    image: python:3.12
+    rules:
+        - changes:
+              - "02_asymm_crypto/**/*"
+    artifacts:
+        paths:
+            - 02_asymm_crypto/
+        expire_in: 1 month
+    script:
+        - python3 execute_tests.py ./02_asymm_crypto
